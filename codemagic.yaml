@@ -5,13 +5,19 @@ workflows:
     environment:
       flutter: stable
     scripts:
-      - name: Extract project
+      - name: Setup project
         script: |
-          unzip blackdeath_project.zip -d extracted
-          cp -r extracted/blackdeath/. .
-      - name: Get Flutter packages
-        script: flutter pub get
+          cd /Users/builder/clone
+          unzip blackdeath_project.zip
+          cp -r blackdeath/. .
+          ls
+      - name: Get packages
+        script: |
+          cd /Users/builder/clone
+          flutter pub get
       - name: Build APK
-        script: flutter build apk --release --no-shrink
+        script: |
+          cd /Users/builder/clone
+          flutter build apk --release
     artifacts:
       - build/**/outputs/**/*.apk
