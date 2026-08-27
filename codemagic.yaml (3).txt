@@ -1,0 +1,17 @@
+workflows:
+  android-workflow:
+    name: BlackDeath Android
+    max_build_duration: 60
+    environment:
+      flutter: stable
+    scripts:
+      - name: Extract project
+        script: |
+          unzip blackdeath_project.zip -d extracted
+          cp -r extracted/blackdeath/. .
+      - name: Get Flutter packages
+        script: flutter pub get
+      - name: Build APK
+        script: flutter build apk --release --no-shrink
+    artifacts:
+      - build/**/outputs/**/*.apk
