@@ -12,7 +12,27 @@ jobs:
         run: |
           unzip blackdeath_project.zip
           cp -r blackdeath/. .
-          sed -i "s/<latest-version>/1.8.22/g" android/build.gradle
+      - name: Fix build.gradle
+        run: |
+          cat > android/build.gradle << 'GRADLE'
+          buildscript {
+            ext.kotlin_version = '1.8.22'
+            repositories {
+              google()
+              mavenCentral()
+            }
+            dependencies {
+              classpath 'com.android.tools.build:gradle:7.3.0'
+              classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+            }
+          }
+          allprojects {
+            repositories {
+              google()
+              mavenCentral()
+            }
+          }
+          GRADLE
       - name: Get packages
         run: flutter pub get
       - name: Build APK
