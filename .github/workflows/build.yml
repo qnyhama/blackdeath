@@ -12,6 +12,7 @@ jobs:
         run: |
           unzip blackdeath_project.zip
           cp -r blackdeath/. .
+          sed -i "s/<latest-version>/1.8.22/g" android/build.gradle
       - name: Get packages
         run: flutter pub get
       - name: Build APK
