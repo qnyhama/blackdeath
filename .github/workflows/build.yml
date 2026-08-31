@@ -12,14 +12,28 @@ jobs:
         run: |
           unzip blackdeath_project.zip
           cp -r blackdeath/. .
-      - name: Overwrite build.gradle
+      - name: Fix android files
         run: |
-          printf 'buildscript {\n    ext.kotlin_version = '"'"'1.9.0'"'"'\n    repositories {\n        google()\n        mavenCentral()\n    }\n    dependencies {\n        classpath '"'"'com.android.tools.build:gradle:8.1.0'"'"'\n        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"\n    }\n}\nallprojects {\n    repositories {\n        google()\n        mavenCentral()\n    }\n}\n' > android/build.gradle
-          cat android/build.gradle
-      - name: Fix SDK version
-        run: |
-          sed -i 's/compileSdkVersion flutter.compileSdkVersion/compileSdkVersion 36/' android/app/build.gradle
-          sed -i 's/targetSdkVersion flutter.targetSdkVersion/targetSdkVersion 36/' android/app/build.gradle
+          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+          cat > android/build.gradle << 'GRADLE'
+buildscript {
+    ext.kotlin_version = '1.9.22'
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+GRADLE
       - name: Get packages
         run: flutter pub get
       - name: Build APK
