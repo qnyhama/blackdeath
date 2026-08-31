@@ -7,33 +7,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0'
+          flutter-version: '3.32.0'
       - name: Setup project
         run: |
           unzip blackdeath_project.zip
           cp -r blackdeath/. .
-      - name: Fix android files
-        run: |
           echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
-          cat > android/build.gradle << 'GRADLE'
-buildscript {
-    ext.kotlin_version = '1.9.22'
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-GRADLE
       - name: Get packages
         run: flutter pub get
       - name: Build APK
