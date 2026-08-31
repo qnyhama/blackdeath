@@ -12,6 +12,9 @@ jobs:
         run: |
           unzip blackdeath_project.zip
           cp -r blackdeath/. .
+      - name: Fix kotlin version
+        run: |
+          sed -i "s/ext.kotlin_version = '<latest-version>'/ext.kotlin_version = '1.8.22'/" android/build.gradle
       - name: Get packages
         run: flutter pub get
       - name: Build APK
