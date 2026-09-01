@@ -3,12 +3,13 @@ workflows:
     name: BlackDeath Android
     max_build_duration: 60
     environment:
-      flutter: stable
+      flutter: 3.27.0
     scripts:
       - name: Setup
         script: |
           unzip blackdeath_project.zip
-          cp -r blackdeath/* .
+          cp -r blackdeath/. .
+          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
       - name: Packages
         script: flutter pub get
       - name: Build
