@@ -5,6 +5,10 @@ workflows:
     environment:
       flutter: 3.27.0
     scripts:
+      - name: Setup
+        script: |
+          unzip blackdeath_project.zip
+          cp -r blackdeath/. .
       - name: Get packages
         script: flutter pub get
       - name: Build APK
