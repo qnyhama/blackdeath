@@ -8,7 +8,7 @@ workflows:
       - name: Setup
         script: |
           unzip blackdeath_project.zip
-          cp -r blackdeath/. .
+          cp -r blackdeath_v2/. .
       - name: Get packages
         script: flutter pub get
       - name: Build APK
